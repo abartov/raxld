@@ -24,7 +24,6 @@ class TextsController < ApplicationController
     repo = "http://benyehuda.org/~asaf/raxld.nt"
     Spira.add_repository(:default, RDF::Repository.load(repo))
     
-
   end
 
   def reset
