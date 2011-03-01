@@ -1,0 +1,6 @@
+<h1>Texts list</h1>
+<table>
+<% for t in @texts %>
+<tr><td><%= link_to t.title, t %></td><td><%= t.annotations.count %></td><td><%= link_to 'Harvest now!', :method => 'harvest'%></td></tr>
+<% end %>
+</ul>
