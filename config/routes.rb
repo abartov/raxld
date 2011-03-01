@@ -1,5 +1,4 @@
 Raxld::Application.routes.draw do
-  get "texts/"
   get "texts/list"
 
   get "texts/show"
