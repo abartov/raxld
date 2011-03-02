@@ -16,17 +16,19 @@ class TextsController < ApplicationController
     xslt.xml = RAILS_ROOT+'/public/'+@text.filename
     #xslt.xsl = RAILS_ROOT+'/public/'+"vmachine.xsl"
     xslt.xsl = RAILS_ROOT+'/public/'+"tei.xsl"
-  
     @xhtml = xslt.serve()
     #temporary, fugly hack
-    @xhtml.gsub!(/\n/, '<br>')
+    @xhtml.gsub!(/\n/, '<br/>')
   end
 
   def harvest
     my_uri = 'http://raxld.benyehuda.org/texts/'+params[:id]
-    repo = "http://raxld.benyehuda.org/raxld.nt"
-    Spira.add_repository(:default, RDF::Repository.load(repo))
-    
+    repo = RDF::Repository.load("http://raxld.benyehuda.org/raxld.nt")
+    Spira.add_repository(:default, repo)
+    @annos = []
+    Spira.repository(:default).subjects.each do |oac_anno|
+      @annos.push Annotation.for(oac_anno)
+    end
   end
 
   def reset

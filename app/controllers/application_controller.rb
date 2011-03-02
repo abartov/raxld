@@ -7,6 +7,7 @@ end
 
  class Annotation
     include Spira::Resource
+    base_uri 'http://raxld.benyehuda.org/purl/oac'
     type URI.new('http://www.openannotation.org/ns/Annotation')
     property :target,  :predicate => URI.new('http://www.openannotation.org/ns/hasTarget')
     property :body,  :predicate => URI.new('http://www.openannotation.org/ns/hasBody')
