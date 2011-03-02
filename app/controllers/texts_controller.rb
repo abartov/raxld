@@ -40,7 +40,8 @@ class TextsController < ApplicationController
     @existing = 0
     Spira.repository(:default).subjects.each do |oac_anno|
       anno = Annotation.for(oac_anno)
-      if not anno.target.nil? and anno.target.to_s == my_uri
+      (target_uri, target_frag) = anno.target.to_s.split('#')
+      if not target_uri.nil? and target_uri == my_uri
         if @text.annotations.find_by_annotation_uri(oac_anno.to_s).nil?
           new_anno = TextAnnotation.new(:annotation_uri => oac_anno.to_s)
           @text.annotations.push new_anno
