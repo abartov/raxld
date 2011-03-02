@@ -1,3 +1,7 @@
+Restart Rails application under Passenger:
+
+touch /path/to/your/app/tmp/restart.txt
+
 == Welcome to Rails
 
 Rails is a web-application framework that includes everything needed to create

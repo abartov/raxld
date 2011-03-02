@@ -1,11 +1,9 @@
 Raxld::Application.routes.draw do
-  get "texts/list"
-
-  get "texts/show"
-
-  get "texts/harvest"
-
-  get "texts/reset"
+ resources :texts do
+   member do
+     get 'harvest'
+   end
+ end
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

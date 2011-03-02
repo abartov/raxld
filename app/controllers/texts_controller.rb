@@ -11,7 +11,7 @@ class TextsController < ApplicationController
   end
 
   def show
-    @text = Text.find_by_id(params[:id])
+    @text = Text.find(params[:id])
     xslt = XML::XSLT.new()
     xslt.xml = RAILS_ROOT+'/public'+@text.filename
     xslt.xsl = RAILS_ROOT+'/public'+"tei_to_xhtml.xsl"
