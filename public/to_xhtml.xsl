@@ -4,7 +4,8 @@
     xmlns:tei="http://www.tei-c.org/ns/1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     exclude-result-prefixes="tei html"
-    version="2.0">
+    version="1.0">
+    <!-- version="2.0"> -->
     <!-- import base conversion style -->
 
     <xsl:import href="tei.xsl"/>
@@ -28,7 +29,7 @@
       </desc>
    </doc>
 
-   <xsl:output method="xhtml" omit-xml-declaration="yes"/>
+   <xsl:output method="html" omit-xml-declaration="yes"/>
     
     <xsl:template match="html:*">
       <xsl:element name="{local-name()}">
