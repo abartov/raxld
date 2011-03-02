@@ -14,7 +14,7 @@ class TextsController < ApplicationController
     @text = Text.find(params[:id])
     xslt = XML::XSLT.new()
     xslt.xml = RAILS_ROOT+'/public/'+@text.filename
-    xslt.xsl = RAILS_ROOT+'/public/'+"tei_to_xhtml.xsl"
+    xslt.xsl = RAILS_ROOT+'/public/'+"tei.xsl"
   
     @xhtml = xslt.serve()
   end
