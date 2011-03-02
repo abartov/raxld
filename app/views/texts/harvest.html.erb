@@ -1,2 +1,7 @@
-<h1>Texts#harvest</h1>
-<p>Not implemented yet!</p>
+<h1>Harvested links for: </h1>
+<p>Found <%= @annos.count %> annotations in remote repository.</p>
+<ol>
+<% @annos.each do |a| %>
+<li><%= a %>
+<% end %>
+</ol>

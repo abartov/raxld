@@ -2,6 +2,16 @@ require 'xml/xslt'
 require 'spira'
 require 'rdf/ntriples'
 
+class Annotation
+  include Spira::Resource
+  base_uri 'http://raxld.benyehuda.org/purl/oac'
+  type URI.new('http://www.openannotation.org/ns/Annotation')
+  property :target,  :predicate => URI.new('http://www.openannotation.org/ns/hasTarget')
+  property :body,  :predicate => URI.new('http://www.openannotation.org/ns/hasBody')
+  property :title, :predicate => DC.title # URI.new('http://www.purl.org/dc/elements/1.1/title')
+  property :author, :predicate => FOAF.name
+end
+
 class TextsController < ApplicationController
   def index
     list
@@ -27,7 +37,12 @@ class TextsController < ApplicationController
     Spira.add_repository(:default, repo)
     @annos = []
     Spira.repository(:default).subjects.each do |oac_anno|
-      @annos.push Annotation.for(oac_anno)
+      anno = Annotation.for(oac_anno)
+      if not anno.target.nil? and anno.target == my_uri
+        text = Text.find(params[:id])
+        text.annotations << TextAnnotation.new(:annotation_uri => anno.to_s)
+        @annos << anno.to_s
+      end
     end
   end
 
