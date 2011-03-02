@@ -14,9 +14,12 @@ class TextsController < ApplicationController
     @text = Text.find(params[:id])
     xslt = XML::XSLT.new()
     xslt.xml = RAILS_ROOT+'/public/'+@text.filename
+    #xslt.xsl = RAILS_ROOT+'/public/'+"vmachine.xsl"
     xslt.xsl = RAILS_ROOT+'/public/'+"tei.xsl"
   
     @xhtml = xslt.serve()
+    #temporary, fugly hack
+    @xhtml.gsub!(/\n/, '<br>')
   end
 
   def harvest

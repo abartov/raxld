@@ -1,0 +1,13 @@
+<http://raxld.benyehuda.org/purl/oac/1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.openannotation.org/ns/Annotation> .
+<http://raxld.benyehuda.org/purl/oac/1> <http://purl.org/dc/elements/1.1/creator> "Asaf Bartov" .
+<http://raxld.benyehuda.org/purl/oac/1> <http://www.openannotation.org/ns/hasTarget> <http://raxld.benyehuda.org/texts/1> .
+<http://raxld.benyehuda.org/purl/oac/1> <http://www.openannotation.org/ns/hasBody> <http://raxld.benyehuda.org/anno1.txt>
+<http://raxld.benyehuda.org/purl/oac/1> <http://purl.org/dc/terms/title> "My opinionated comment." .
+
+<http://raxld.benyehuda.org/purl/oac/2> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.openannotation.org/ns/Annotation> .
+<http://raxld.benyehuda.org/purl/oac/2> <http://purl.org/dc/elements/1.1/creator> "Donald Duck" .
+<http://raxld.benyehuda.org/purl/oac/2> <http://purl.org/dc/terms/title> "Here, have some modern dance!" .
+<http://raxld.benyehuda.org/purl/oac/2> <http://www.openannotation.org/ns/hasTarget> <http://raxld.benyehuda.org/texts/1> .
+<http://raxld.benyehuda.org/purl/oac/2> <http://www.openannotation.org/ns/hasBody> <http://upload.wikimedia.org/wikipedia/commons/3/38/Two_dancers.jpg>
+
+

@@ -10,7 +10,7 @@
    
    <xsl:variable name="vmLogo">../vm-images/poweredby.gif</xsl:variable>
    
-   <xsl:variable name="cssInclude">../src/vmachine.css</xsl:variable>
+   <xsl:variable name="cssInclude">vmachine.css</xsl:variable>
    
    <!-- The JavaScript include file. Keep in mind that, as of April 1, 2008,
    the current beta version of Firefox 3.0 has instituted strong JavaScript
