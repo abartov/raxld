@@ -31,9 +31,11 @@ GEM
     addressable (2.2.4)
     arel (2.0.9)
     builder (2.1.2)
+    columnize (0.3.2)
     erubis (2.6.6)
       abstract (>= 1.0.0)
     i18n (0.5.0)
+    linecache (0.43)
     mail (2.2.15)
       activesupport (>= 2.3.6)
       i18n (>= 0.4.0)
@@ -65,6 +67,11 @@ GEM
       addressable (>= 2.2)
     rdf-isomorphic (0.3.4)
       rdf (>= 0.2.3)
+    ruby-debug (0.10.4)
+      columnize (>= 0.1)
+      ruby-debug-base (~> 0.10.4.0)
+    ruby-debug-base (0.10.4)
+      linecache (>= 0.3)
     spira (0.0.12)
       promise (>= 0.3.0)
       rdf (>= 0.2.3)
@@ -82,5 +89,6 @@ PLATFORMS
 
 DEPENDENCIES
   rails (= 3.0.5)
+  ruby-debug
   spira
   sqlite3

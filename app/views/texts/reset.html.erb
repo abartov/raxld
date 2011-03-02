@@ -1,4 +1,6 @@
 <h1>Text Annotations Reset</h1>
 <p>As requested, I have <b>forgotten</b> all annotations for this text.</p>
 
-<p>You probably want to <%= link_to 'harvest new ones', :method => 'harvest' %> now.</p>
+<p>You probably want to <%= link_to 'harvest new ones', harvest_text_path(@text) %> now.</p>
+<h2>Back</h2>
+<p>Or go <%= link_to 'back to the text list', texts_path %>.</p>
