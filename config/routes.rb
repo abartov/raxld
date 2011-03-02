@@ -2,6 +2,7 @@ Raxld::Application.routes.draw do
  resources :texts do
    member do
      get 'harvest'
+     get 'reset'
    end
  end
 

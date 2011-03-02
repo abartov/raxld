@@ -33,19 +33,19 @@ class TextsController < ApplicationController
 
   def harvest
     my_uri = 'http://raxld.benyehuda.org/texts/'+params[:id]
+    @text = Text.find(params[:id])
     repo = RDF::Repository.load("http://raxld.benyehuda.org/raxld.nt")
     Spira.add_repository(:default, repo)
     @annos = []
     @existing = 0
     Spira.repository(:default).subjects.each do |oac_anno|
       anno = Annotation.for(oac_anno)
-      if not anno.target.nil? and anno.target == my_uri
-        text = Text.find(params[:id])
-        if text.annotations.find_by_annotation_uri(oac_anno.to_s).nil?
-          new_anno = TextAnnotation.new(:annotation_uri => anno.to_s)
-          text.annotations.push new_anno
+      if not anno.target.nil? and anno.target.to_s == my_uri
+        if @text.annotations.find_by_annotation_uri(oac_anno.to_s).nil?
+          new_anno = TextAnnotation.new(:annotation_uri => oac_anno.to_s)
+          @text.annotations.push new_anno
 	  new_anno.save!
-          text.save!
+          @text.save!
           @annos << 'URI: '+oac_anno.to_s+' dc:title -- '+anno.title.to_s + ' body: ' + anno.body.to_s
         else
           @existing += 1
@@ -56,7 +56,7 @@ class TextsController < ApplicationController
 
   def reset
     @text = Text.find_by_id(params[:id])
-    Text.annotations.delete_all
+    @text.annotations.delete_all
   end
 
 end
