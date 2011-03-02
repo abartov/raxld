@@ -24,7 +24,7 @@ class TextsController < ApplicationController
 
   def harvest
     my_uri = 'http://raxld.benyehuda.org/texts/'+params[:id]
-    repo = "http://benyehuda.org/~asaf/raxld.nt"
+    repo = "http://raxld.benyehuda.org/raxld.nt"
     Spira.add_repository(:default, RDF::Repository.load(repo))
     
   end
