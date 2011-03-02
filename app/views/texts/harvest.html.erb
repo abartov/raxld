@@ -1,7 +1,10 @@
 <h1>Harvested links for: </h1>
-<p>Found <%= @annos.count %> annotations in remote repository.</p>
+<p>Found <%= @annos.count %> new annotations in remote repository, and <%= @existing %> annotations I already know about.</p>
+<% if @annos.count > 0 %>
+<h2>Dumping new annotations:</h2>
 <ol>
 <% @annos.each do |a| %>
 <li><%= a %>
 <% end %>
 </ol>
+<% end %>
