@@ -7,7 +7,9 @@
 <li><%= a %>
 <% end %>
 </ol>
-<% else %>
-<h2>Reset?</h2>
-So maybe you want to <b><%= link_to 'reset harvested annotations', reset_text_path(@text) %></b> to enable interesting harvesting again?
 <% end %>
+<h2>Reset?</h2>
+Maybe you want to <b><%= link_to 'reset harvested annotations', reset_text_path(@text) %></b> to enable interesting harvesting again?
+<h2>Back</h2>
+<p>Or go <%= link_to 'back to the text list', texts_path %>.</p>
+
