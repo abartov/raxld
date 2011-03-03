@@ -33,10 +33,10 @@ class TextsController < ApplicationController
       target = REXML::XPath.first xmldoc, anno.xpath
       unless target.nil?
         unless anno.body.nil? or anno.body.empty?
-          anno_body = REXML::Element.new('div') 
+          anno_body = REXML::Element.new('OAC_Annotation') 
           anno_body.attributes['class'] = 'OAC_Annotation'
           if /.jpg$/.match(anno.body)
-            img = REXML::Element.new('img')
+            img = REXML::Element.new('OAC_img')
             img.attributes['src'] = anno.body
             anno_body.add img
           else
@@ -54,7 +54,9 @@ class TextsController < ApplicationController
     xslt.xml = xmldoc
     #xslt.xml = RAILS_ROOT+'/public/'+@text.filename
     #xslt.xsl = RAILS_ROOT+'/public/'+"vmachine.xsl"
-    xslt.xsl = ::Rails.root.to_s+'/public/'+"tei.xsl"
+    #xslt.xsl = ::Rails.root.to_s+'/public/'+"min.xsl"
+    xslt.xsl = REXML::Document.new File.read( ::Rails.root.to_s+'/public/'+"min.xsl")
+    #xslt.xsl = REXML::Document.new File.read( ::Rails.root.to_s+'/public/'+"tei.xsl")
     @xhtml = xslt.serve()
     #temporary, fugly hack
     @xhtml.gsub!(/\n/, '<br/>')

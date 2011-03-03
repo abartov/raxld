@@ -37,6 +37,18 @@
       <p> anything with a head can go in the TOC </p>
     </xd:detail>
   </xd:doc>
+  <xsl:template match="OAC_Annotation">
+    <div class="OAC_Annotation">
+    <xsl:apply-templates/>
+    </div>
+  </xsl:template>
+  <xsl:template match="OAC_img">
+    <img>
+      <xsl:attribute name="src">
+        <xsl:value-of select="current()[src]" />
+      </xsl:attribute>
+    </img>
+  </xsl:template>
   <xsl:template match="tei:*" mode="maketoc">
     <xsl:param name="forcedepth"/>
     <xsl:variable name="myName">
