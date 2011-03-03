@@ -1,6 +1,8 @@
 require 'xml/xslt'
 require 'spira'
 require 'rdf/ntriples'
+require 'rexml/document'
+require 'net/http'
 
 class Annotation
   include Spira::Resource
@@ -23,9 +25,36 @@ class TextsController < ApplicationController
   def show
     @text = Text.find(params[:id])
     xslt = XML::XSLT.new()
-    xslt.xml = RAILS_ROOT+'/public/'+@text.filename
+    debugger
+    f = File.new(::Rails.root.to_s+'/public/'+@text.filename)
+    xmldoc = REXML::Document.new f
+    @text.annotations.each do |anno|
+      debugger
+      target = REXML::XPath.first xmldoc, anno.xpath
+      unless target.nil?
+        unless anno.body.nil? or anno.body.empty?
+          anno_body = REXML::Element.new('div') 
+          anno_body.attributes['class'] = 'OAC_Annotation'
+          if /.jpg$/.match(anno.body)
+            img = REXML::Element.new('img')
+            img.attributes['src'] = anno.body
+            anno_body.add img
+          else
+            # assume we just read the URL and dump its contents as-is in our DIV
+            res = Net::HTTP.get_response(URI.parse(anno.body))
+            anno_body.add_text res.body
+          end
+          target.parent.insert_after(target, anno_body)
+        end
+      else
+        # TODO: if target is nil, just add at the bottom
+        print "moose"
+      end
+    end
+    xslt.xml = xmldoc
+    #xslt.xml = RAILS_ROOT+'/public/'+@text.filename
     #xslt.xsl = RAILS_ROOT+'/public/'+"vmachine.xsl"
-    xslt.xsl = RAILS_ROOT+'/public/'+"tei.xsl"
+    xslt.xsl = ::Rails.root.to_s+'/public/'+"tei.xsl"
     @xhtml = xslt.serve()
     #temporary, fugly hack
     @xhtml.gsub!(/\n/, '<br/>')
@@ -39,11 +68,18 @@ class TextsController < ApplicationController
     @annos = []
     @existing = 0
     Spira.repository(:default).subjects.each do |oac_anno|
+      debugger
       anno = Annotation.for(oac_anno)
       (target_uri, target_frag) = anno.target.to_s.split('#')
       if not target_uri.nil? and target_uri == my_uri
         if @text.annotations.find_by_annotation_uri(oac_anno.to_s).nil?
-          new_anno = TextAnnotation.new(:annotation_uri => oac_anno.to_s)
+          unless target_frag.nil?
+            # strip the xpointer() wrapper
+            m = /xpointer\((.*)\)/.match(target_frag)
+            target_frag = m[1]
+          end
+          anno.body = '' if anno.body.nil?
+          new_anno = TextAnnotation.new(:annotation_uri => oac_anno.to_s, :xpath => target_frag, :body => anno.body.to_s)
           @text.annotations.push new_anno
 	  new_anno.save!
           @text.save!
