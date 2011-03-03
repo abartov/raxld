@@ -8,7 +8,7 @@
 <http://raxld.benyehuda.org/purl/oac/2> <http://purl.org/dc/elements/1.1/creator> "Donald Duck" .
 <http://raxld.benyehuda.org/purl/oac/2> <http://purl.org/dc/terms/title> "Here, have some modern dance!" .
 <http://raxld.benyehuda.org/purl/oac/2> <http://www.openannotation.org/ns/Target> <http://raxld.benyehuda.org/texts/1#xpointer(/TEI.2/text/body/*/head[1])> .
-<http://raxld.benyehuda.org/purl/oac/2> <http://www.openannotation.org/ns/Body> <http://upload.wikimedia.org/wikipedia/commons/3/38/Two_dancers.jpg>
+<http://raxld.benyehuda.org/purl/oac/2> <http://www.openannotation.org/ns/Body> <http://www.man.poznan.pl/images/logo_interedition.jpg> .
 
 <http://raxld.benyehuda.org/purl/oac/3> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.openannotation.org/ns/Annotation> .
 <http://raxld.benyehuda.org/purl/oac/3> <http://purl.org/dc/elements/1.1/creator> "George W. Bush" .

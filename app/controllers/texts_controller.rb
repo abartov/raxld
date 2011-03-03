@@ -52,9 +52,6 @@ class TextsController < ApplicationController
       end
     end
     xslt.xml = xmldoc
-    #xslt.xml = RAILS_ROOT+'/public/'+@text.filename
-    #xslt.xsl = RAILS_ROOT+'/public/'+"vmachine.xsl"
-    #xslt.xsl = ::Rails.root.to_s+'/public/'+"min.xsl"
     xslt.xsl = REXML::Document.new File.read( ::Rails.root.to_s+'/public/'+"min.xsl")
     #xslt.xsl = REXML::Document.new File.read( ::Rails.root.to_s+'/public/'+"tei.xsl")
     @xhtml = xslt.serve()
@@ -83,8 +80,6 @@ class TextsController < ApplicationController
           anno.body = '' if anno.body.nil?
           new_anno = TextAnnotation.new(:annotation_uri => oac_anno.to_s, :xpath => target_frag, :body => anno.body.to_s)
           @text.annotations.push new_anno
-	  new_anno.save!
-          @text.save!
           @annos << 'URI: '+oac_anno.to_s+' dc:title -- '+anno.title.to_s + ' body: ' + anno.body.to_s
         else
           @existing += 1
@@ -95,7 +90,7 @@ class TextsController < ApplicationController
 
   def reset
     @text = Text.find_by_id(params[:id])
-    @text.annotations.delete_all
+    @text.annotations.clear
   end
 
 end
