@@ -13,7 +13,7 @@
 <http://raxld.benyehuda.org/purl/oac/3> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.openannotation.org/ns/Annotation> .
 <http://raxld.benyehuda.org/purl/oac/3> <http://purl.org/dc/elements/1.1/creator> "George W. Bush" .
 <http://raxld.benyehuda.org/purl/oac/3> <http://purl.org/dc/terms/title> "My truthiness..." .
-<http://raxld.benyehuda.org/purl/oac/3> <http://www.openannotation.org/ns/Target> <http://raxld.benyehuda.org/texts/2#xpointer(/TEI.2/test/front/*/head[1]> .
-<http://raxld.benyehuda.org/purl/oac/3> <http://www.openannotation.org/ns/Body> <http://tvguide.ca/NR/rdonlyres/6C750DC2-6CB0-44EC-A81D-03BE1007D308/218139/george_w_bush_102.jpg>
+<http://raxld.benyehuda.org/purl/oac/3> <http://www.openannotation.org/ns/Target> <http://raxld.benyehuda.org/texts/2#xpointer(/TEI.2/test/front/*/head[1])> .
+<http://raxld.benyehuda.org/purl/oac/3> <http://www.openannotation.org/ns/Body> <http://tvguide.ca/NR/rdonlyres/6C750DC2-6CB0-44EC-A81D-03BE1007D308/218139/george_w_bush_102.jpg> .
 
 
