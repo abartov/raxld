@@ -8,6 +8,7 @@ gem 'rails', '3.0.5'
 gem 'sqlite3'
 gem 'spira'
 gem 'ruby-debug'
+gem 'sparql-client'
 
 # Use unicorn as the web server
 # gem 'unicorn'

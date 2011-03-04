@@ -3,6 +3,7 @@ require 'spira'
 require 'rdf/ntriples'
 require 'rexml/document'
 require 'net/http'
+require 'sparql/client'
 
 class Annotation
   include Spira::Resource
@@ -12,6 +13,17 @@ class Annotation
   property :body,  :predicate => URI.new('http://www.openannotation.org/ns/Body')
   property :title, :predicate => DC.title # URI.new('http://www.purl.org/dc/elements/1.1/title')
   property :author, :predicate => FOAF.name
+end
+
+class DBPItem
+  include Spira::Resource
+  base_uri "http://dbpedia.org/resource"
+  default_source :dbpedia
+  has_many :foafnames, :predicate => RDF::URI('http://xmlns.com/foaf/0.1/name')
+  has_many :labels, :predicate => RDF::URI('http://www.w3.org/2000/01/rdf-schema#label')
+  has_many :regions, :predicate => RDF::URI('http://dbpedia.org/ontology/region')
+  has_many :categories, :predicate => RDF::URI('http://www.w3.org/2004/02/skos/core#subject')
+  has_many :abstracts, :predicate => RDF::URI('http://dbpedia.org/ontology/abstract')
 end
 
 class TextsController < ApplicationController
@@ -67,7 +79,6 @@ class TextsController < ApplicationController
     @annos = []
     @existing = 0
     Spira.repository(:default).subjects.each do |oac_anno|
-      debugger
       anno = Annotation.for(oac_anno)
       (target_uri, target_frag) = anno.target.to_s.split('#')
       if not target_uri.nil? and target_uri == my_uri
@@ -92,5 +103,46 @@ class TextsController < ApplicationController
     @text = Text.find_by_id(params[:id])
     @text.annotations.clear
   end
-
+  def suggest
+    # call show to generate the text
+    show
+    #sparql = SPARQL::Client.new("http://dbpedia.org/sparql")
+    @capitalized = @xhtml.scan(/[A-Z][a-z]+/)
+    @suggestions = []
+    @capitalized.each do |term|
+      # grab N-Triples from DBPedia, if any
+      res = Net::HTTP.get_response(URI.parse('http://dbpedia.org/data/'+term+'.ntriples'))
+      next unless res.code == '200'
+      # (manually grabbing, saving to a file, and then reading from it, because of a not-understood problem with loading a repo from a URI -- no time to look into it now)
+      # TODO: yeah, this is not concurrency-safe
+      fname = '/tmp/__temp_ntriples__.nt'
+      File.open(fname,'w') { |f| 
+        f.truncate(0)
+        f.write(res.body)
+        Spira.add_repository! :dbpedia, RDF::Repository.load(fname)
+        dbp = DBPItem.for(term)
+        label = ''
+        if not dbp.foafnames.empty?
+          label = dbp.foafnames.first
+        elsif not dbp.labels.empty?
+          label = dbp.labels.first
+        else
+          label = '(ERROR GETTING LABEL)'
+        end
+        abstract = ''
+        dbp.abstracts.each do |ab|
+          if ab.plain?
+            abstract = ab.to_s
+            break
+          elsif ab.language == 'en'
+            abstract = ab.to_s
+            break
+          end
+        end
+        @suggestions.push({ :label => label, :abstract => abstract })
+      }
+      debugger
+      File.delete(fname)
+    end
+  end
 end

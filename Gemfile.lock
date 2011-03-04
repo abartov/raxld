@@ -35,6 +35,7 @@ GEM
     erubis (2.6.6)
       abstract (>= 1.0.0)
     i18n (0.5.0)
+    json_pure (1.5.1)
     linecache (0.43)
     mail (2.2.15)
       activesupport (>= 2.3.6)
@@ -72,6 +73,9 @@ GEM
       ruby-debug-base (~> 0.10.4.0)
     ruby-debug-base (0.10.4)
       linecache (>= 0.3)
+    sparql-client (0.0.9)
+      json_pure (>= 1.4.2)
+      rdf (~> 0.3.0)
     spira (0.0.12)
       promise (>= 0.3.0)
       rdf (>= 0.2.3)
@@ -90,5 +94,6 @@ PLATFORMS
 DEPENDENCIES
   rails (= 3.0.5)
   ruby-debug
+  sparql-client
   spira
   sqlite3

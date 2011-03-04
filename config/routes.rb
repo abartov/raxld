@@ -3,6 +3,7 @@ Raxld::Application.routes.draw do
    member do
      get 'harvest'
      get 'reset'
+     get 'suggest'
    end
  end
 
