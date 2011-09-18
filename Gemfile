@@ -1,15 +1,17 @@
 source 'http://rubygems.org'
-
-gem 'rails', '3.0.5'
+source 'http://gems.github.com'
+source 'http://gems.rubyonrails.org'
+gem 'rails'
+#gem 'rails', '3.0.5'
 
 # Bundle edge Rails instead:
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
+#gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'sqlite3'
 gem 'spira'
-gem 'ruby-debug'
+#gem 'ruby-debug'
 gem 'sparql-client'
-
+gem 'ruby-xslt'
 # Use unicorn as the web server
 # gem 'unicorn'
 
@@ -18,7 +20,7 @@ gem 'sparql-client'
 
 # To use debugger (ruby-debug for Ruby 1.8.7+, ruby-debug19 for Ruby 1.9.2+)
 # gem 'ruby-debug'
-# gem 'ruby-debug19', :require => 'ruby-debug'
+gem 'ruby-debug19', :require => 'ruby-debug'
 
 # Bundle the extra gems:
 # gem 'bj'
