@@ -3,7 +3,7 @@ class CreateAnnotationBodies < ActiveRecord::Migration
     create_table :annotation_bodies do |t|
       t.string :uri
       t.string :mime_type
-      t.blob :content
+      t.binary :content
 
       t.timestamps
     end
