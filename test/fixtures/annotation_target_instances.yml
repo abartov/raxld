@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/Fixtures.html
+
+one:
+  annotation_id: 1
+  annotation_target_info_id: 1
+
+two:
+  annotation_id: 1
+  annotation_target_info_id: 1
