@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Position:</b>
+  <%= @annotation_constraint.position %>
+</p>
+
+<p>
+  <b>Checksum:</b>
+  <%= @annotation_constraint.checksum %>
+</p>
+
+<p>
+  <b>Context:</b>
+  <%= @annotation_constraint.context %>
+</p>
+
+<p>
+  <b>Constrained uri:</b>
+  <%= @annotation_constraint.constrained_uri %>
+</p>
+
+
+<%= link_to 'Edit', edit_annotation_constraint_path(@annotation_constraint) %> |
+<%= link_to 'Back', annotation_constraints_path %>

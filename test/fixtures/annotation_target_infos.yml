@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/Fixtures.html
+
+one:
+  uri: MyString
+  mime_type: MyString
+
+two:
+  uri: MyString
+  mime_type: MyString

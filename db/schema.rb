@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110303102655) do
+ActiveRecord::Schema.define(:version => 20110920065315) do
 
   create_table "text_annotations", :force => true do |t|
     t.string   "annotation_uri"
@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(:version => 20110303102655) do
     t.datetime "updated_at"
     t.string   "xpath"
     t.string   "body"
+    t.integer  "text_id"
   end
 
   create_table "texts", :force => true do |t|
@@ -26,6 +27,11 @@ ActiveRecord::Schema.define(:version => 20110303102655) do
     t.string   "filename"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "wikipedia_labels", :force => true do |t|
+    t.string "uri"
+    t.string "label"
   end
 
 end

@@ -1,0 +1,25 @@
+<%= form_for(@annotation_target_info) do |f| %>
+  <% if @annotation_target_info.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@annotation_target_info.errors.count, "error") %> prohibited this annotation_target_info from being saved:</h2>
+
+      <ul>
+      <% @annotation_target_info.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :uri %><br />
+    <%= f.text_field :uri %>
+  </div>
+  <div class="field">
+    <%= f.label :mime_type %><br />
+    <%= f.text_field :mime_type %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

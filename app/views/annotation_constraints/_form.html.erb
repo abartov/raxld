@@ -1,0 +1,33 @@
+<%= form_for(@annotation_constraint) do |f| %>
+  <% if @annotation_constraint.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@annotation_constraint.errors.count, "error") %> prohibited this annotation_constraint from being saved:</h2>
+
+      <ul>
+      <% @annotation_constraint.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :position %><br />
+    <%= f.text_field :position %>
+  </div>
+  <div class="field">
+    <%= f.label :checksum %><br />
+    <%= f.text_field :checksum %>
+  </div>
+  <div class="field">
+    <%= f.label :context %><br />
+    <%= f.text_field :context %>
+  </div>
+  <div class="field">
+    <%= f.label :constrained_uri %><br />
+    <%= f.text_field :constrained_uri %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

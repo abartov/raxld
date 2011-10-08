@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/Fixtures.html
+
+one:
+  position: MyString
+  checksum: MyString
+  context: MyString
+  constrained_uri: MyString
+
+two:
+  position: MyString
+  checksum: MyString
+  context: MyString
+  constrained_uri: MyString

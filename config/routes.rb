@@ -1,4 +1,15 @@
 Raxld::Application.routes.draw do
+
+  resources :annotation_target_infos
+
+  resources :annotation_constraints
+
+  resources :annotation_bodies
+
+  resources :annotations
+
+  get "annotations/query"
+
  resources :texts do
    member do
      get 'harvest'

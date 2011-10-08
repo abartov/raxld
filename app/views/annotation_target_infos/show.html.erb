@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Uri:</b>
+  <%= @annotation_target_info.uri %>
+</p>
+
+<p>
+  <b>Mime type:</b>
+  <%= @annotation_target_info.mime_type %>
+</p>
+
+
+<%= link_to 'Edit', edit_annotation_target_info_path(@annotation_target_info) %> |
+<%= link_to 'Back', annotation_target_infos_path %>

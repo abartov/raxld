@@ -1,0 +1,29 @@
+<h1>Listing annotation_constraints</h1>
+
+<table>
+  <tr>
+    <th>Position</th>
+    <th>Checksum</th>
+    <th>Context</th>
+    <th>Constrained uri</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @annotation_constraints.each do |annotation_constraint| %>
+  <tr>
+    <td><%= annotation_constraint.position %></td>
+    <td><%= annotation_constraint.checksum %></td>
+    <td><%= annotation_constraint.context %></td>
+    <td><%= annotation_constraint.constrained_uri %></td>
+    <td><%= link_to 'Show', annotation_constraint %></td>
+    <td><%= link_to 'Edit', edit_annotation_constraint_path(annotation_constraint) %></td>
+    <td><%= link_to 'Destroy', annotation_constraint, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Annotation constraint', new_annotation_constraint_path %>

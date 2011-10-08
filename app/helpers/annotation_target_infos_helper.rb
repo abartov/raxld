@@ -1,0 +1,2 @@
+module AnnotationTargetInfosHelper
+end

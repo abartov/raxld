@@ -1,0 +1,27 @@
+<h1>Listing annotation_bodies</h1>
+
+<table>
+  <tr>
+    <th>Uri</th>
+    <th>Mime type</th>
+    <th>Content</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @annotation_bodies.each do |annotation_body| %>
+  <tr>
+    <td><%= annotation_body.uri %></td>
+    <td><%= annotation_body.mime_type %></td>
+    <td><%= annotation_body.content %></td>
+    <td><%= link_to 'Show', annotation_body %></td>
+    <td><%= link_to 'Edit', edit_annotation_body_path(annotation_body) %></td>
+    <td><%= link_to 'Destroy', annotation_body, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Annotation body', new_annotation_body_path %>

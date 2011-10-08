@@ -37,11 +37,9 @@ class TextsController < ApplicationController
   def show
     @text = Text.find(params[:id])
     xslt = XML::XSLT.new()
-    debugger
     f = File.new(::Rails.root.to_s+'/public/'+@text.filename)
     xmldoc = REXML::Document.new f
     @text.annotations.each do |anno|
-      debugger
       target = REXML::XPath.first xmldoc, anno.xpath
       unless target.nil?
         unless anno.body.nil? or anno.body.empty?
@@ -74,6 +72,7 @@ class TextsController < ApplicationController
   def harvest
     my_uri = 'http://raxld.benyehuda.org/texts/'+params[:id]
     @text = Text.find(params[:id])
+    debugger
     repo = RDF::Repository.load("http://raxld.benyehuda.org/raxld.nt")
     Spira.add_repository(:default, repo)
     @annos = []
