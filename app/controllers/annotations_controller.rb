@@ -40,10 +40,47 @@ class AnnotationsController < ApplicationController
   # POST /annotations
   # POST /annotations.json
   def create
-    @annotation = Annotation.new(params[:annotation])
+    body_uri = params["body_uri"]
+    targets = params["targets"]
+    #debugger
+    if body_uri.nil? or targets.nil? or targets.empty?
+      # invalid annotation
+      # TODO: report the error
+      flash[:error] = "Invalid input"
+      return
+    end
+    @body = AnnotationBody.find_by_uri(body_uri)
+    if @body.nil?
+      # if the body is not already hosted on our server, we need to create a body record for it anyway, so we can represent the relationship correctly.  However, we won't be able to actually serve that URI ourselves.
+      @body = AnnotationBody.new(:uri => body_uri)
+    end
+    @annotation = Annotation.new(:author_uri => params["author_uri"])
+    @annotation.annotation_body = @body
+    @targets = []
+    targets.each do |t|
+      target = AnnotationTargetInfo.find_by_uri(t["uri"])
+      if target.nil?
+        # this one's new to us -- create it
+        target = AnnotationTargetInfo.new(:uri => t["uri"])
+      end
+      @annotation.targets << target
+      target.save
+      @annotation.save
+      constraint = t["constraint"]
+      unless constraint.nil?
+        instance = AnnotationTargetInstance.find_by_annotation_id_and_annotation_target_info_id(@annotation.id, target.id)
+        c = AnnotationConstraint.new(constraint)
+        instance.annotation_constraint = c
+        instance.save!
+      end
+      target.save!
+    end
+    @body.save!
 
     respond_to do |format|
       if @annotation.save
+        @annotation.uri = url_for @annotation
+        @annotation.save!
         format.html { redirect_to @annotation, notice: 'Annotation was successfully created.' }
         format.json { render json: @annotation, status: :created, location: @annotation }
       else

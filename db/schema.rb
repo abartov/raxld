@@ -11,7 +11,52 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110920065315) do
+ActiveRecord::Schema.define(:version => 20111008133404) do
+
+  create_table "annotation_bodies", :force => true do |t|
+    t.string   "uri"
+    t.string   "mime_type"
+    t.binary   "content"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "annotation_id"
+  end
+
+  create_table "annotation_constraints", :force => true do |t|
+    t.string   "position"
+    t.string   "checksum"
+    t.string   "context"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "constrainable_id"
+    t.string   "constrainable_type"
+  end
+
+  create_table "annotation_target_infos", :force => true do |t|
+    t.string   "uri"
+    t.string   "mime_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "annotation_target_instances", :force => true do |t|
+    t.integer  "annotation_id"
+    t.integer  "annotation_target_info_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "annotations", :force => true do |t|
+    t.string   "uri"
+    t.string   "author_uri"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "annotations_annotation_target_infos", :force => true do |t|
+    t.integer "annotation_id"
+    t.integer "annotation_target_info_id"
+  end
 
   create_table "text_annotations", :force => true do |t|
     t.string   "annotation_uri"
