@@ -44,7 +44,7 @@ class AnnotationsController < ApplicationController
     t = AnnotationTargetInfo.find_by_uri(uri)
     annos = nil
     annos = t.annotations unless t.nil? # TODO: return just URIs
-    repond_to do |format|
+    respond_to do |format|
       format.html # query.html.erb
       format.json { render json: annos }
     end
