@@ -8,6 +8,7 @@ gem 'rails'
 #gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'sqlite3'
+gem 'mysql'
 gem 'spira'
 #gem 'ruby-debug'
 gem 'sparql-client'
