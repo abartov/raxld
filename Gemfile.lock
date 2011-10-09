@@ -50,6 +50,7 @@ GEM
       treetop (~> 1.4.8)
     mime-types (1.16)
     multi_json (1.0.3)
+    mysql (2.8.1)
     polyglot (0.3.2)
     promise (0.3.0)
     rabl (0.3.0)
@@ -118,6 +119,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  mysql
   rabl
   rails
   ruby-debug19

@@ -6,9 +6,11 @@ Raxld::Application.routes.draw do
 
   resources :annotation_bodies
 
-  resources :annotations
-
-  get "annotations/query"
+  resources :annotations do
+    collection do
+      get 'query'
+    end
+  end
 
  resources :texts do
    member do
