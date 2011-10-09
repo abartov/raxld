@@ -40,10 +40,13 @@ class AnnotationBodiesController < ApplicationController
   # POST /annotation_bodies
   # POST /annotation_bodies.json
   def create
-    @annotation_body = AnnotationBody.new(params[:annotation_body])
-
+    mime = params[:mime_type]
+    content = params[:content]
+    @annotation_body = AnnotationBody.new(:mime_type => mime, :content => content)
     respond_to do |format|
       if @annotation_body.save
+        @annotation_body.uri = url_for @annotation_body
+        @annotation_body.save!
         format.html { redirect_to @annotation_body, notice: 'Annotation body was successfully created.' }
         format.json { render json: @annotation_body, status: :created, location: @annotation_body }
       else

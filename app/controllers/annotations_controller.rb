@@ -17,7 +17,8 @@ class AnnotationsController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render json: @annotation }
+      #format.json { render json: @annotation.to_json(:include => [:annotation_body => {}, :annotation_target_instances => { :include => :annotation_constraint  }])}
+      format.json #{ render json: @annotation } # rabl
     end
   end
 
