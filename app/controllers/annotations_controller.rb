@@ -50,27 +50,33 @@ class AnnotationsController < ApplicationController
     end
   end
 
-  # GET /annotations/render?uri=uri_to_render
-  def render
-    debugger
-    uri = params[:uri]
-    t = AnnotationTargetInfo.find_by_uri(uri)
+  # GET /annotations/render_annotated?uri=uri_to_render
+  def render_annotated
+    @text = ''
+    @uri = params[:uri]
+    t = AnnotationTargetInfo.find_by_uri(@uri)
     @msg = ''
     if t.nil?
-      @msg = "No annotations known for URI: #{uri}"
+      @msg = "<h2 style=\"font-color: red\">No annotations known for URI: #{@uri}</h2>"
     else
       @text = fetch_url(t.uri)
       accumulated_offset = 0
       t.annotations.each { |a|
+        if a.annotation_body.content.nil?
+          body = fetch_url(a.annotation_body.uri)
+        else
+          body = a.annotation_body.content
+        end
+
         constraint = a.annotation_target_instances[0].annotation_constraint
         unless constraint.nil? # if there's no constraint, we'll just ignore the annotation.  TODO: eventually, place the annotation at the beginning of the URI -- i.e. treat frags correctly
           # TODO: call the M&M service to validate the integrity of the constraint and get an updated position
           # TODO: calculate beginning and end position
-          before_pos = constraint.position[/\d+/]
-          after_pos = constraint.position[/-\d+/]
-          @text.insert(accumulated_offset + constraint.before_pos, "<span title=\"#{a.annotation_body.content}\">") # 15 chars + length(body) added
-          accumulated_offset += 15 + length(a.annotation_body.content)
-          @text.insert(accumulated_offset + constraint.after_pos, "</span>")
+          before_pos = constraint.position[/\d+/].to_i
+          after_pos = constraint.position[/\d+$/].to_i
+          @text.insert(accumulated_offset + before_pos, "<span title=\"#{body}\">") # 15 chars + length(body) added
+          accumulated_offset += 15 + body.length
+          @text.insert(accumulated_offset + after_pos, "</span>")
           accumulated_offset += 7
         end
       }

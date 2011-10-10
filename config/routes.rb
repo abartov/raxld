@@ -9,7 +9,7 @@ Raxld::Application.routes.draw do
   resources :annotations do
     collection do
       get 'query'
-      get 'render'
+      get 'render_annotated'
     end
   end
   match '/annotations', :controller => :annotations, :action => :options, :constraints => {:method => 'OPTIONS'}
