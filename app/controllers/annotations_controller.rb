@@ -60,6 +60,7 @@ class AnnotationsController < ApplicationController
       @msg = "<h2 style=\"font-color: red\">No annotations known for URI: #{@uri}</h2>"
     else
       @text = fetch_url(t.uri)
+      @text.gsub!("\r\n\r\n",'<p/>')
       accumulated_offset = 0
       t.annotations.each { |a|
         if a.annotation_body.content.nil?
