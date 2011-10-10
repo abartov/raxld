@@ -11,6 +11,8 @@ Raxld::Application.routes.draw do
       get 'query'
     end
   end
+  match '/annotations', :controller => :annotations, :action => :options, :constraints => {:method => 'OPTIONS'}
+  match '/annotation_bodies', :controller => :annotation_bodies, :action => :options, :constraints => {:method => 'OPTIONS'}
 
  resources :texts do
    member do
