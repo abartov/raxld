@@ -1,5 +1,6 @@
 require 'spira'
 require 'rdf/ntriples'
+require 'net/http'
 
 class ApplicationController < ActionController::Base
   protect_from_forgery
@@ -31,5 +32,13 @@ end
     def options
       #cors_preflight_check
     end
+  def fetch_url(url)
+    r = Net::HTTP.get_response( URI.parse( url ) )
+    if r.is_a? Net::HTTPSuccess
+      r.body
+    else
+      nil
+    end
+  end
 end
 
