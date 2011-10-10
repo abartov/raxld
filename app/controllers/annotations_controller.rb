@@ -59,12 +59,15 @@ class AnnotationsController < ApplicationController
     if t.nil?
       @msg = "<h2 style=\"font-color: red\">No annotations known for URI: #{@uri}</h2>"
     else
-      @text = fetch_url(t.uri)
+      @text = fetch_url(t.uri, {})
+      debugger
       @text.gsub!("\r\n\r\n",'<p/>')
       accumulated_offset = 0
+      body = ''
       t.annotations.each { |a|
         if a.annotation_body.content.nil?
-          body = fetch_url(a.annotation_body.uri)
+          body = fetch_url(a.annotation_body.uri, { 'Accept' => 'application/json' } )
+          body = ActiveSupport::JSON.decode(body)["annotation_body"]["content"]
         else
           body = a.annotation_body.content
         end
