@@ -49,6 +49,7 @@ class AnnotationsController < ApplicationController
       format.json { render json: annos }
     end
   end
+
   OAC_CONSTRAINT_SVC = 'http://172.17.6.140:8182/oac-constraint/match'
   #OAC_CONSTRAINT_SVC = 'http://87.106.12.254:8182/oac-constraint/match'
   # used to call Moritz and Marco's constraint validate service
@@ -58,7 +59,7 @@ class AnnotationsController < ApplicationController
     # TODO: make the service address configurable
     debugger
     res = RestClient.post OAC_CONSTRAINT_SVC, { 'uri' => uri, 'constraint' => { 'context' => c.context, 'checksum' => c.checksum, 'position' => c.position }}.to_json, :content_type => :json, :accept => :json
-    return nil unless res.code == 200 # service returns 409 if constraint invalid
+    return nil unless (not res.nil?) and res.code == 200 # service returns 409 if constraint invalid
     ret = ActiveSupport::JSON.decode(res.to_s)
     c.position = ret["constraint"]["position"]
     c.checksum = ret["constraint"]["checksum"]
