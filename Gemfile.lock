@@ -85,6 +85,8 @@ GEM
     rdf-isomorphic (0.3.4)
       rdf (>= 0.2.3)
     rdoc (3.9.4)
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
     ruby-debug-base19 (0.11.25)
       columnize (>= 0.3.1)
       linecache19 (>= 0.5.11)
@@ -122,6 +124,7 @@ DEPENDENCIES
   mysql
   rabl
   rails
+  rest-client
   ruby-debug19
   ruby-xslt
   sparql-client

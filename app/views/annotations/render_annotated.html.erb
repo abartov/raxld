@@ -1,4 +1,9 @@
 <h2>Annotated view of: <%= @uri %></h2>
-<%= @msg %>
+<style type="text/css">
+span.und { text-decoration: underline }
+span.anno { background-color: yellow }
+
+</style>
+<h2 style="color: red"><%= @msg %></h2>
 <%= simple_format @text %>
 

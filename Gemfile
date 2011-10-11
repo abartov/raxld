@@ -15,7 +15,7 @@ gem 'sparql-client'
 gem 'ruby-xslt'
 # Use unicorn as the web server
 # gem 'unicorn'
-
+gem 'rest-client'
 # Deploy with Capistrano
 # gem 'capistrano'
 

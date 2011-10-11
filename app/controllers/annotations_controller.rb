@@ -49,6 +49,22 @@ class AnnotationsController < ApplicationController
       format.json { render json: annos }
     end
   end
+  OAC_CONSTRAINT_SVC = 'http://172.17.6.140:8182/oac-constraint/match'
+  #OAC_CONSTRAINT_SVC = 'http://87.106.12.254:8182/oac-constraint/match'
+  # used to call Moritz and Marco's constraint validate service
+  def validate_constraint(c, uri)
+    # TODO: make the validation phase configureable
+    # if config.validate? 
+    # TODO: make the service address configurable
+    debugger
+    res = RestClient.post OAC_CONSTRAINT_SVC, { 'uri' => uri, 'constraint' => { 'context' => c.context, 'checksum' => c.checksum, 'position' => c.position }}.to_json, :content_type => :json, :accept => :json
+    return nil unless res.code == 200 # service returns 409 if constraint invalid
+    ret = ActiveSupport::JSON.decode(res.to_s)
+    c.position = ret["constraint"]["position"]
+    c.checksum = ret["constraint"]["checksum"]
+    # TODO: _update_ the stored constraint with latest position and checksum, but into _separate_ fields.  So that the original annotation data is always present, just in case
+    # end
+  end
 
   # GET /annotations/render_annotated?uri=uri_to_render
   def render_annotated
@@ -57,14 +73,15 @@ class AnnotationsController < ApplicationController
     t = AnnotationTargetInfo.find_by_uri(@uri)
     @msg = ''
     if t.nil?
-      @msg = "<h2 style=\"font-color: red\">No annotations known for URI: #{@uri}</h2>"
+      @msg = "No annotations known for URI: #{@uri}"
     else
       @text = fetch_url(t.uri, {})
-      debugger
-      @text.gsub!("\r\n\r\n",'<p/>')
+      # TODO: make a more robust text renderer, including support for non-DOS (CRLF) line endings
+      
       accumulated_offset = 0
       body = ''
       t.annotations.each { |a|
+        debugger
         if a.annotation_body.content.nil?
           body = fetch_url(a.annotation_body.uri, { 'Accept' => 'application/json' } )
           body = ActiveSupport::JSON.decode(body)["annotation_body"]["content"]
@@ -74,15 +91,20 @@ class AnnotationsController < ApplicationController
 
         constraint = a.annotation_target_instances[0].annotation_constraint
         unless constraint.nil? # if there's no constraint, we'll just ignore the annotation.  TODO: eventually, place the annotation at the beginning of the URI -- i.e. treat frags correctly
-          # TODO: call the M&M service to validate the integrity of the constraint and get an updated position
-          # TODO: calculate beginning and end position
-          before_pos = constraint.position[/\d+/].to_i
-          after_pos = constraint.position[/\d+$/].to_i
-          @text.insert(accumulated_offset + before_pos, "<span title=\"#{body}\">") # 15 chars + length(body) added
-          accumulated_offset += 15 + body.length
-          @text.insert(accumulated_offset + after_pos, "</span>")
-          accumulated_offset += 7
+          # call the M&M service to validate the integrity of the constraint and get an updated position
+          validate_constraint(constraint, t.uri)
+          unless constraint.nil?
+            # insert the annotation
+            before_pos = constraint.position[/\d+/].to_i
+            after_pos = constraint.position[/\d+$/].to_i
+            @text.insert(accumulated_offset + before_pos, "<span title=\"#{body}\" class=\"und\">") # 15 chars + length(body) added
+            accumulated_offset += 27 + body.length
+            @text.insert(accumulated_offset + after_pos, "</span><span class=\"anno\">***</span>")
+            accumulated_offset += 36
+          end
         end
+        @text.gsub!("\r\n\r\n",'<p/>') # happily, same character count!
+        @text.gsub!("\n", '<p/>') # actually, we don't care about the offsets at this point...
       }
     end
   end

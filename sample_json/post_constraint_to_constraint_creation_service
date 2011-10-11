@@ -1,0 +1,7 @@
+{ 
+	"uri" : "http://www.gutenberg.org/cache/epub/11/pg11.txt",
+	"constraint" : 
+	{ 
+		"position" : "char=786,791"
+	}
+}
