@@ -43,7 +43,7 @@ class AnnotationsController < ApplicationController
     uri = params[:q]
     t = AnnotationTargetInfo.find_by_uri(uri)
     annos = nil
-    annos = t.annotations unless t.nil? # TODO: return just URIs
+    annos = t.annotations unless t.nil? 
     respond_to do |format|
       format.html # query.html.erb
       format.json { render json: annos }
@@ -77,7 +77,6 @@ class AnnotationsController < ApplicationController
       @msg = "No annotations known for URI: #{@uri}"
     else
       @text = fetch_url(t.uri, {})
-      # TODO: make a more robust text renderer, including support for non-DOS (CRLF) line endings
       
       accumulated_offset = 0
       body = ''

@@ -1,0 +1,16 @@
+To-Do List for the Interedition Open Annotation Collaboration Server
+
+- Fix insertion logic
+  - sort annotations by start position
+  - handle overlapping annotations correctly
+- Add support for line= positions
+- Improve look of annotated text renderer
+- Add support for images as annotation targets in the renderer
+- Support editing annotations with PUT operations
+- Implement access control (API keys?)
+- Make annotations versioned entities?
+- Update annotation constraints when the constraint service returns an updated position, while keeping the original position as well
+- Make validation phase configurable (on/off, validation service URL, currently hard-coded in annotations_controller.rb)
+- if there's no constraint, I currently just ignore the annotation.  TODO: eventually, place the annotation at the beginning of the URI -- i.e. treat URI frags correctly
+- Add an HTML interface to everything beside the renderer
+
