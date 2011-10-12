@@ -82,17 +82,19 @@ class AnnotationsController < ApplicationController
       t.annotations.each { |a|
         if a.annotation_body.content.nil?
           body = fetch_url(a.annotation_body.uri, { 'Accept' => 'application/json' } )
+          next if body.nil? # TODO: report the error
           body = ActiveSupport::JSON.decode(body)["annotation_body"]["content"]
         else
           body = a.annotation_body.content
         end
         @text += "</body>" if @text.rindex('</body>').nil?
-        constraint = a.annotation_target_instances[0].annotation_constraint
+        constraint = a.annotation_target_instances[0].annotation_constraint # TODO: support multiple targets in same document
         unless constraint.nil? # if there's no constraint, we'll just ignore the annotation.  TODO: eventually, place the annotation at the beginning of the URI -- i.e. treat frags correctly
           # call the M&M service to validate the integrity of the constraint and get an updated position
           validate_constraint(constraint, t.uri)
           unless constraint.nil?
             # insert the annotation
+            #debugger
             before_pos = constraint.position[/\d+/].to_i
             after_pos = constraint.position[/\d+$/].to_i
             annid = "%013d" % (URI.parse(a.uri).path.slice(/\d+/))
