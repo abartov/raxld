@@ -13,4 +13,6 @@ To-Do List for the Interedition Open Annotation Collaboration Server
 - Make validation phase configurable (on/off, validation service URL, currently hard-coded in annotations_controller.rb)
 - if there's no constraint, I currently just ignore the annotation.  TODO: eventually, place the annotation at the beginning of the URI -- i.e. treat URI frags correctly
 - Add an HTML interface to everything beside the renderer
+- Add query options (by author, by annotation type)
+- Accept and emit RDF
 

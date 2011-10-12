@@ -1,8 +1,44 @@
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+<script language="JavaScript" type="text/javascript">
+$(document).ready(function(){
+
+$(".und").click(function(e){
+top = e.y;
+left = e.x;
+id = $(this)[0].id;
+bodytext = $("#"+id+"_body").html();
+$("body").append("<div id='popUpText' class='anno_popup'>"+bodytext+"</div>");
+left = parseFloat($("#"+id).offset().left)+20;
+topy = parseFloat($("#"+id).offset().top)+20;
+$("#popUpText").offset({"left": left,"top":topy});
+
+$("#popUpText").click(function(){
+$(this).remove();
+});
+
+
+});
+
+
+});
+
+</script>
+
+
 <h2>Annotated view of: <%= @uri %></h2>
 <style type="text/css">
 span.und { text-decoration: underline }
 span.anno { background-color: yellow }
-
+div.anno_popup { position: absolute;
+display: block;
+border: thin black solid;
+height: 300px;
+width: 300px;
+overflow: auto;
+background-color: white;
+font-size: 18pt;
+padding: 1em;
+ }
 </style>
 <h2 style="color: red"><%= @msg %></h2>
 <%= simple_format(@text , {}, :sanitize => false) %>
