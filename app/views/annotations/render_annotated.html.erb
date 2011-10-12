@@ -5,5 +5,5 @@ span.anno { background-color: yellow }
 
 </style>
 <h2 style="color: red"><%= @msg %></h2>
-<%= simple_format @text %>
+<%= simple_format(@text , {}, :sanitize => false) %>
 

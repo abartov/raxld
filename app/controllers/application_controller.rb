@@ -34,7 +34,7 @@ end
       #cors_preflight_check
     end
   def fetch_url(url, options)
-    debugger
+    #debugger
 #    r = Net::HTTP.get( URI.parse( url ), options )
     u = URI.parse(url)
     h = Net::HTTP.new(u.host, u.port)

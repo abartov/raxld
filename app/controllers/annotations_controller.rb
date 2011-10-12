@@ -50,14 +50,13 @@ class AnnotationsController < ApplicationController
     end
   end
 
-  OAC_CONSTRAINT_SVC = 'http://172.17.6.140:8182/oac-constraint/match'
-  #OAC_CONSTRAINT_SVC = 'http://87.106.12.254:8182/oac-constraint/match'
+  #OAC_CONSTRAINT_SVC = 'http://172.17.6.140:8182/oac-constraint/match'
+  OAC_CONSTRAINT_SVC = 'http://87.106.12.254:8182/oac-constraint/match'
   # used to call Moritz and Marco's constraint validate service
   def validate_constraint(c, uri)
     # TODO: make the validation phase configureable
     # if config.validate? 
     # TODO: make the service address configurable
-    debugger
     res = RestClient.post OAC_CONSTRAINT_SVC, { 'uri' => uri, 'constraint' => { 'context' => c.context, 'checksum' => c.checksum, 'position' => c.position }}.to_json, :content_type => :json, :accept => :json
     return nil unless (not res.nil?) and res.code == 200 # service returns 409 if constraint invalid
     ret = ActiveSupport::JSON.decode(res.to_s)
@@ -81,14 +80,13 @@ class AnnotationsController < ApplicationController
       accumulated_offset = 0
       body = ''
       t.annotations.each { |a|
-        debugger
         if a.annotation_body.content.nil?
           body = fetch_url(a.annotation_body.uri, { 'Accept' => 'application/json' } )
           body = ActiveSupport::JSON.decode(body)["annotation_body"]["content"]
         else
           body = a.annotation_body.content
         end
-
+        @text += "</body>" if @text.rindex('</body>').nil?
         constraint = a.annotation_target_instances[0].annotation_constraint
         unless constraint.nil? # if there's no constraint, we'll just ignore the annotation.  TODO: eventually, place the annotation at the beginning of the URI -- i.e. treat frags correctly
           # call the M&M service to validate the integrity of the constraint and get an updated position
@@ -97,14 +95,17 @@ class AnnotationsController < ApplicationController
             # insert the annotation
             before_pos = constraint.position[/\d+/].to_i
             after_pos = constraint.position[/\d+$/].to_i
-            @text.insert(accumulated_offset + before_pos, "<span title=\"#{body}\" class=\"und\">") # 15 chars + length(body) added
-            accumulated_offset += 27 + body.length
+            annid = "%013d" % (URI.parse(a.uri).path.slice(/\d+/))
+            @text.insert(accumulated_offset + before_pos, "<span id=\"anno_#{annid}\" class=\"und\">") # including a 13-digit id
+            accumulated_offset += 42
             @text.insert(accumulated_offset + after_pos, "</span><span class=\"anno\">***</span>")
             accumulated_offset += 36
+            @text.insert(@text.rindex('</body>'), "<span class=\"anno_body\" id=\"anno_#{annid}_body\">#{body}</span>")
           end
         end
         @text.gsub!("\r\n\r\n",'<p/>') # happily, same character count!
         @text.gsub!("\n", '<p/>') # actually, we don't care about the offsets at this point...
+        
       }
     end
   end
