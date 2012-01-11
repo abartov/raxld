@@ -37,7 +37,7 @@ task :prepare_cities => :environment do
     # Geonames cities TSV order: (from http://download.geonames.org/export/dump/ )
     # geo_id, label, ascii_label, alt_labels, latitude, longitude, feature_class, feature_code, country_code, alt_country_code, admin1, admin2, admin3, admin4, population, elevation, gtopo30, timezone, modification_date
     fields = line.split /\t/
-    cities << GeonameCity.new(:geo_id => fields[0], :label => fields[1], :ascii_label => fields[2], :alt_labels => fields[3], :latitude => fields[4], :longitude => fields[5], :feature_class => fields[6], :feature_code => fields[7], :country_code => fields[8], :alt_country_code => fields[9], :population => fields[14].to_i, :elevation => fields[15].to_i, :timezone => fields[17], :modification_date => fields[18])
+    cities << GeonameCity.new(:geo_id => fields[0], :label => fields[1], :ascii_label => fields[2], :alt_labels => fields[3], :latitude => fields[4], :longitude => fields[5], :feature_class => fields[6], :feature_code => fields[7], :country_code => fields[8], :alt_country_code => fields[9], :population => fields[14].to_i, :elevation => fields[15].to_i, :timezone => fields[17], :modification_date => fields[18].chomp)
     count += 1
     if count % 1000 == 0 # buffer the inserts
       GeonameCity.import cities
