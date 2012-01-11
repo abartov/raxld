@@ -13,6 +13,8 @@ gem 'spira'
 #gem 'ruby-debug'
 gem 'sparql-client'
 gem 'ruby-xslt'
+gem 'activerecord-import'
+
 # Use unicorn as the web server
 # gem 'unicorn'
 gem 'rest-client'
@@ -37,3 +39,4 @@ gem 'ruby-debug19', :require => 'ruby-debug'
 # end
 
 gem 'rabl' # for custom JSON rendering
+

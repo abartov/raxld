@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111008133404) do
+ActiveRecord::Schema.define(:version => 20120111220306) do
 
   create_table "annotation_bodies", :force => true do |t|
     t.string   "uri"
@@ -56,6 +56,25 @@ ActiveRecord::Schema.define(:version => 20111008133404) do
   create_table "annotations_annotation_target_infos", :force => true do |t|
     t.integer "annotation_id"
     t.integer "annotation_target_info_id"
+  end
+
+  create_table "geoname_cities", :force => true do |t|
+    t.string   "geo_id"
+    t.string   "label"
+    t.string   "alt_labels"
+    t.string   "latitude"
+    t.string   "longitude"
+    t.string   "feature_class"
+    t.string   "feature_code"
+    t.string   "country_code"
+    t.string   "alt_country_code"
+    t.integer  "population"
+    t.integer  "elevation"
+    t.string   "timezone"
+    t.string   "modification_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "ascii_label"
   end
 
   create_table "text_annotations", :force => true do |t|
