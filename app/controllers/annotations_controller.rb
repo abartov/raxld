@@ -130,27 +130,7 @@ class AnnotationsController < ApplicationController
       @body = AnnotationBody.new(:uri => body_uri)
     end
     @annotation = Annotation.new(:author_uri => params["author_uri"])
-    @annotation.annotation_body = @body
-    @targets = []
-    targets.each do |t|
-      target = AnnotationTargetInfo.find_by_uri(t["uri"])
-      if target.nil?
-        # this one's new to us -- create it
-        target = AnnotationTargetInfo.new(:uri => t["uri"])
-      end
-      @annotation.targets << target
-      target.save
-      @annotation.save
-      constraint = t["constraint"]
-      unless constraint.nil?
-        instance = AnnotationTargetInstance.find_by_annotation_id_and_annotation_target_info_id(@annotation.id, target.id)
-        c = AnnotationConstraint.new(constraint)
-        instance.annotation_constraint = c
-        instance.save!
-      end
-      target.save!
-    end
-    @body.save!
+    @annotation.construct(@body, targets) # fill out the annotation and build relationships
 
     respond_to do |format|
       if @annotation.save

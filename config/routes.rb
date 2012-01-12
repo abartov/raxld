@@ -18,6 +18,7 @@ Raxld::Application.routes.draw do
  resources :texts do
    member do
      get 'harvest'
+     get 'suggest_geonames'
      get 'reset'
      get 'suggest'
    end
