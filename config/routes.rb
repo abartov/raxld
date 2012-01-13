@@ -10,6 +10,7 @@ Raxld::Application.routes.draw do
     collection do
       get 'query'
       get 'render_annotated'
+      post 'annotate_with_geonames'
     end
   end
   match '/annotations', :controller => :annotations, :action => :options, :constraints => {:method => 'OPTIONS'}
