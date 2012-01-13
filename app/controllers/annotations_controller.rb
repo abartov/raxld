@@ -41,7 +41,7 @@ class AnnotationsController < ApplicationController
   def query
     uri = params[:q]
     t = AnnotationTargetInfo.find_by_uri(uri)
-    annos = nil
+    annos = []
     annos = t.annotations unless t.nil? 
     respond_to do |format|
       format.html # query.html.erb
