@@ -54,6 +54,7 @@ GEM
     mime-types (1.16)
     multi_json (1.0.3)
     mysql (2.8.1)
+    nokogiri (1.5.0)
     polyglot (0.3.2)
     promise (0.3.0)
     rabl (0.3.0)
@@ -127,6 +128,7 @@ PLATFORMS
 DEPENDENCIES
   activerecord-import
   mysql
+  nokogiri
   rabl
   rails
   rest-client
