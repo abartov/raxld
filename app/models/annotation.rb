@@ -21,7 +21,8 @@ public
       constraint = t["constraint"]
       unless constraint.nil?
         instance = AnnotationTargetInstance.find_by_annotation_id_and_annotation_target_info_id(self.id, target.id)
-        c = AnnotationConstraint.new(constraint)
+        debugger
+        c = AnnotationConstraint.new(:constraint => constraint["constraint"], :constraint_type => constraint["constraint_type"])
         instance.annotation_constraint = c
         instance.save!
       end

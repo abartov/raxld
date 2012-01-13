@@ -56,6 +56,7 @@ class AnnotationsController < ApplicationController
     # TODO: make the validation phase configureable
     # if config.validate? 
     # TODO: make the service address configurable
+    # TODO: fix the constraint fields parsing, now that constraints are generic blobs
     res = RestClient.post OAC_CONSTRAINT_SVC, { 'uri' => uri, 'constraint' => { 'context' => c.context, 'checksum' => c.checksum, 'position' => c.position }}.to_json, :content_type => :json, :accept => :json
     return nil unless (not res.nil?) and res.code == 200 # service returns 409 if constraint invalid
     ret = ActiveSupport::JSON.decode(res.to_s)
