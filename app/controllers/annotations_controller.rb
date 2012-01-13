@@ -14,11 +14,10 @@ class AnnotationsController < ApplicationController
   # GET /annotations/1.json
   def show
     @annotation = Annotation.find(params[:id])
-
     respond_to do |format|
       format.html # show.html.erb
       #format.json { render json: @annotation.to_json(:include => [:annotation_body => {}, :annotation_target_instances => { :include => :annotation_constraint  }])}
-      format.json #{ render json: @annotation } # rabl
+      format.json # { render json: @annotation } # rabl
     end
   end
 
@@ -171,7 +170,7 @@ class AnnotationsController < ApplicationController
         @annotation.uri = url_for @annotation
         @annotation.save!
         format.html { redirect_to @annotation, notice: 'Annotation was successfully created.' }
-        format.json { render json: @annotation, status: :created, location: @annotation, :callback: params["jsonp"] }
+        format.json { render json: @annotation, status: :created, location: @annotation }
       else
         format.html { render action: "new" }
         format.json { render json: @annotation.errors, status: :unprocessable_entity }
