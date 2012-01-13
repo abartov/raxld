@@ -1,5 +1,8 @@
 To-Do List for the Interedition Open Annotation Collaboration Server
 
+- update sample JSON files to reflect new, generic constraint semantics
+- update sample JSON dir with files and curl command lines for all operations
+- add a convenience script to the sample JSON dir to automatically replace the server IP with a command line argument.
 - add an option to the annotations query that dumps the annotations in full, not just their URIs
 - Fix insertion logic
   - sort annotations by start position
@@ -17,3 +20,17 @@ To-Do List for the Interedition Open Annotation Collaboration Server
 - Add query options (by author, by annotation type)
 - Accept and emit RDF
 
+From Doug:
+Could you add a parameter to the annotation server called "jsonp".
+The value of this parameter should be pre-prepended to the output
+as a JS function and append ); to the end.
+
+For example:
+
+&jsonp=callMe
+
+should return
+
+callMe(
+[JSON BLOB]
+);

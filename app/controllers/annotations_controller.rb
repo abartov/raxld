@@ -171,7 +171,7 @@ class AnnotationsController < ApplicationController
         @annotation.uri = url_for @annotation
         @annotation.save!
         format.html { redirect_to @annotation, notice: 'Annotation was successfully created.' }
-        format.json { render json: @annotation, status: :created, location: @annotation }
+        format.json { render json: @annotation, status: :created, location: @annotation, :callback: params["jsonp"] }
       else
         format.html { render action: "new" }
         format.json { render json: @annotation.errors, status: :unprocessable_entity }

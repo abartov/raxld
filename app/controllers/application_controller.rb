@@ -1,3 +1,5 @@
+require 'xml/xslt'
+require 'rexml/document'
 require 'spira'
 require 'rdf/ntriples'
 require 'net/http'
