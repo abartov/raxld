@@ -1,2 +1,2 @@
-collection @geonames_annos
+collection @geoname_annos
 attributes :uri
