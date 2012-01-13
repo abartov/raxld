@@ -20,17 +20,3 @@ To-Do List for the Interedition Open Annotation Collaboration Server
 - Add query options (by author, by annotation type)
 - Accept and emit RDF
 
-From Doug:
-Could you add a parameter to the annotation server called "jsonp".
-The value of this parameter should be pre-prepended to the output
-as a JS function and append ); to the end.
-
-For example:
-
-&jsonp=callMe
-
-should return
-
-callMe(
-[JSON BLOB]
-);
