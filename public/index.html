@@ -28,7 +28,7 @@
 
       #page {
         background-color: #f0f0f0;
-        width: 750px;
+        width: 950px;
         margin: 0;
         margin-left: auto;
         margin-right: auto;
@@ -40,7 +40,7 @@
         border: 3px solid #aaa;
         border-top: none;
         padding: 25px;
-        width: 500px;
+        width: 700px;
       }
 
       #sidebar {
@@ -233,9 +233,17 @@
               <p>and Accept: application/json.  You'll get a JSON array of annotations that target it.  Then you can look up the annotations individually with a GET request for this URIs, with an Accept: application/json header.
               </p>
             </li>
+            <li><h2>Render a TEI document into HTML with any annotations stored on this server for it: GET /annotations/render_annotated_tei?uri=your_TEI_document_here</h2>
+            <p>an XHTML rendering of the TEI document will be returned, with any known annotations inserted according to the XPath constraints stored in the annotations.  Note that the annotations are currently <i>assumed</i> to be valid XPath expressions that reflect an existing position in the TEI file.</p>
+            </li>
           </ol>
           <h1>Additional Functions</h1>
           <ul><li><h2>Update an annotation body</h2><p>PUT http://interedition.performantsoftware.com/annotation_bodies/1 with curl -X PUT and a "Content-Type: application/json" header, and the updated JSON object in the body.  JSON must look like the JSON returned by GETting the annotation body.</p></li>
+<li><h2>Create Geonames-based annotations for a list of tokens and target URIs</h2>
+<p>POST <b>http://--Current-IP--/annotations/annotate_with_geonames</b> with a plaintext body of TAB-separated values.</p><p>The expected file format is:</p><p>
+&lt;token&gt; &lt;TAB&gt; &lt;document-URI&gt; &lt;TAB&gt; &lt;XPath1,frequency&gt; &lt;TAB&gt; &lt;XPath2,frequency&gt; ...</p><p>
+If you Accept: application/json, a list of URIs for the annotations created will be returned.  Otherwise, an HTML page with an annotation count and a list of URIs is returned.</p>
+</li>
           </ul>
         </div>
       </div>

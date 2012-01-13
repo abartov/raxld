@@ -39,4 +39,4 @@ gem 'ruby-debug19', :require => 'ruby-debug'
 # end
 
 gem 'rabl' # for custom JSON rendering
-
+gem 'sundawg_country_codes' # for country code lookup

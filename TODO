@@ -1,5 +1,6 @@
 To-Do List for the Interedition Open Annotation Collaboration Server
 
+- add an option to the annotations query that dumps the annotations in full, not just their URIs
 - Fix insertion logic
   - sort annotations by start position
   - handle overlapping annotations correctly
