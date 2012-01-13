@@ -151,7 +151,6 @@ class AnnotationsController < ApplicationController
   def create
     body_uri = params["body_uri"]
     targets = params["targets"]
-    #debugger
     if body_uri.nil? or targets.nil? or targets.empty?
       # invalid annotation
       # TODO: report the error
@@ -165,6 +164,7 @@ class AnnotationsController < ApplicationController
     end
     @annotation = Annotation.new(:author_uri => params["author_uri"])
     @annotation.construct(@body, targets) # fill out the annotation and build relationships
+    debugger
 
     respond_to do |format|
       if @annotation.save

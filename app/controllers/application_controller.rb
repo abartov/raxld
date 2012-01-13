@@ -35,6 +35,7 @@ def cors_preflight_check
 end
 def options
   #cors_preflight_check
+  head :ok
 end
 def fetch_url(url, options)
 #    r = Net::HTTP.get( URI.parse( url ), options )
