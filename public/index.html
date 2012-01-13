@@ -216,7 +216,7 @@
             <li>
               <h2>Store a new annotation and get a URI for it</h2>
               <p>POST JSON to http://interedition.performantsoftware.com/annotations like the following: <br/>
-{ "author_uri" : "http://people.org/asaf_bartov", "body_uri" : "http://interedition.performantsoftware.com/annotation_bodies/1", "targets" : [ { "uri" : "http://example.com/texts/Alice_in_Wonderland", "constraint" : { "checksum" : "fee1dead", "position" : "140-147", "context" : "some useful buffer for diff-like contextualizing" } } ] }
+{ "author_uri" : "http://people.org/asaf_bartov", "body_uri" : "http://interedition.performantsoftware.com/annotation_bodies/1", "targets" : [ { "uri" : "http://example.com/texts/Alice_in_Wonderland", "constraint" : { "constraint_type" : "xpath", "constraint" : "//TEI.2/foo/bar" } } ] }
 
               <br/> (if your annotation body is not already URI-addressable, use annotation body URI from previous step</p>
             </li>
@@ -224,7 +224,7 @@
             <li>
               <h2>Retrieve an annotation</h2>
               <p>GET http://interedition.performantsoftware.com/annotations/1 with curl with an "Accept: application/json" header to get the first annotation etc.<br/>You will get JSON like: <br/>
-{"annotation":<b>{"annotation_body"</b>:{"uri":"http://interedition.performantsoftware.com/annotation_bodies/1","mime_type":"text/html","created_at":"2011-10-09T12:07:50Z","updated_at":"2011-10-09T12:08:51Z"},<b>"annotation_target_instances"</b>:[{"annotation_target_instance":{"annotation_constraint":{"position":"140-147","checksum":"fee1dead","context":"some useful buffer for diff-like contextualizing","created_at":"2011-10-09T12:08:51Z","updated_at":"2011-10-09T12:08:51Z"},<b>"annotation_target_info"</b>:{"uri":"http://example.com/texts/Alice_in_Wonderland","mime_type":null}}}]}}
+{"annotation":<b>{"annotation_body"</b>:{"uri":"http://interedition.performantsoftware.com/annotation_bodies/1","mime_type":"text/html","created_at":"2011-10-09T12:07:50Z","updated_at":"2011-10-09T12:08:51Z"},<b>"annotation_target_instances"</b>:[{"annotation_target_instance":{"annotation_constraint":{"constraint_type" : "marco's", "constraint" : "{ "position":"140-147","checksum":"fee1dead","context":"some useful buffer for diff-like contextualizing"}","created_at":"2011-10-09T12:08:51Z","updated_at":"2011-10-09T12:08:51Z"},<b>"annotation_target_info"</b>:{"uri":"http://example.com/texts/Alice_in_Wonderland","mime_type":null}}}]}}
 </p>
             </li>
 

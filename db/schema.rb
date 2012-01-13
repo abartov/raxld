@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120111220306) do
+ActiveRecord::Schema.define(:version => 20120113161542) do
 
   create_table "annotation_bodies", :force => true do |t|
     t.string   "uri"
@@ -23,13 +23,12 @@ ActiveRecord::Schema.define(:version => 20120111220306) do
   end
 
   create_table "annotation_constraints", :force => true do |t|
-    t.string   "position"
-    t.string   "checksum"
-    t.string   "context"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "constrainable_id"
     t.string   "constrainable_type"
+    t.binary   "constraint"
+    t.string   "constraint_type"
   end
 
   create_table "annotation_target_infos", :force => true do |t|
