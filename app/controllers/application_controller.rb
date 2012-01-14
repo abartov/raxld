@@ -64,7 +64,7 @@ end
           c = anno.annotation_target_instances[0].annotation_constraint
           unless c.nil? or c.constraint_type != 'xpath_and_word_count' # only handle properly constrained annotations
             c.constraint.match /,/ # expected format: <xpath>,word-count, e.g. "//TEI.2[1]/p[2],13"
-            xpath, word_count = $`, $'
+            xpath, word_count = $`, $'.to_i
             node = xmldoc.xpath(xpath).first
             unless node.nil?
               unless anno.annotation_body.nil? or anno.annotation_body.content.nil? or anno.annotation_body.content.empty?
@@ -86,8 +86,8 @@ end
                 end
                 # serialize existing node and interpolate our annotation markup
                 node_as_text = node.serialize
-                charpos = find_charpos_by_word_number(node_as_text, word_count)
-                new_node_text = node_as_text[0..charpos] + anno_body.serialize + node_as_text[charpos..-1]
+                charpos = find_charpos_by_word_number(node_as_text, word_count, true)
+                new_node_text = node_as_text[0..charpos-1] + anno_body.serialize + node_as_text[charpos..-1]
                 
                 # remember the node to replace and the annotation body to replace it with
                 # (we don't do it during the loop to avoid changing the order for later XPath matches)
@@ -110,7 +110,12 @@ end
   end
 
   # Dirk Roorda's word counting code (originally in Perl)
-  def find_charpos_by_word_number(text, word_number)
+  def find_charpos_by_word_number (text, word_number, with_outermost_tags)
+	hot_layer = 0
+	if with_outermost_tags then
+		hot_layer = 1
+	end
+
 	elementstack = Array.new
 	wordpos = 0;
 	charpos = 0;
@@ -125,7 +130,7 @@ end
 			tag = ""
 			rest = ""
 		end
-		if not elementstack.empty? then
+		if elementstack.length != hot_layer then
 			charpos += pre.length
 		else 
 			prerep = pre;
