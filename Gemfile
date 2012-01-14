@@ -39,4 +39,5 @@ gem 'nokogiri'
 # end
 
 gem 'rabl' # for custom JSON rendering
-gem 'sundawg_country_codes' # for country code lookup
+#gem 'sundawg_country_codes' # for country code lookup
+gem 'carmen'
