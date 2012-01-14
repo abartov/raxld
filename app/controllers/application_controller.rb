@@ -98,19 +98,16 @@ end
           end
         end
         nodes_to_replace.each do |n|
-          debugger
           n[0].replace(n[1])
         end
       end
     end
-    debugger
     xslt.xml = REXML::Document.new xmldoc.serialize
     xslt.xsl = REXML::Document.new File.read(::Rails.root.to_s+'/public/'+"min.xsl")
     #xslt.xsl = REXML::Document.new File.read( ::Rails.root.to_s+'/public/'+"tei.xsl")
     xhtml = xslt.serve()
     #temporary, fugly hack
     xhtml.gsub!(/\n/, '<br/>')
-     # DEBUG xhtml = nodes_to_replace.to_s
      
     return xhtml
   end
