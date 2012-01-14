@@ -69,7 +69,6 @@ class AnnotationsController < ApplicationController
   # GET /annotations/render_annotated_tei?uri=TEI_document_to_render_annotated
   def render_annotated_tei
     uri = URI.escape(params[:uri])
-    debugger
     @xhtml = annotate_xml_and_render_html(uri)
     if @xhtml.nil? or @xhtml.empty?
       @xhtml = "<b>Error!</b>  Could not render the TEI document at #{uri}!"

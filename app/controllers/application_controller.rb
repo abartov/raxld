@@ -88,24 +88,30 @@ end
                 node_as_text = node.serialize
                 charpos = find_charpos_by_word_number(node_as_text, word_count, true)
                 new_node_text = node_as_text[0..charpos-1] + anno_body.serialize + node_as_text[charpos..-1]
-                
+                new_node = Nokogiri::XML(new_node_text).children[0]
                 # remember the node to replace and the annotation body to replace it with
                 # (we don't do it during the loop to avoid changing the order for later XPath matches)
-                nodes_to_replace << [node, new_node_text]
+                nodes_to_replace << [node, new_node]
                 #node.parent.insert_after(node, anno_body) # REXML
               end
             end
           end
         end
+        nodes_to_replace.each do |n|
+          debugger
+          n[0].replace(n[1])
+        end
       end
     end
-#    xslt.xml = xmldoc
-#    xslt.xsl = REXML::Document.new File.read(::Rails.root.to_s+'/public/'+"min.xsl")
-#    #xslt.xsl = REXML::Document.new File.read( ::Rails.root.to_s+'/public/'+"tei.xsl")
-#    xhtml = xslt.serve()
-#    #temporary, fugly hack
-#    xhtml.gsub!(/\n/, '<br/>')
-     xhtml = nodes_to_replace.to_s
+    debugger
+    xslt.xml = REXML::Document.new xmldoc.serialize
+    xslt.xsl = REXML::Document.new File.read(::Rails.root.to_s+'/public/'+"min.xsl")
+    #xslt.xsl = REXML::Document.new File.read( ::Rails.root.to_s+'/public/'+"tei.xsl")
+    xhtml = xslt.serve()
+    #temporary, fugly hack
+    xhtml.gsub!(/\n/, '<br/>')
+     # DEBUG xhtml = nodes_to_replace.to_s
+     
     return xhtml
   end
 
