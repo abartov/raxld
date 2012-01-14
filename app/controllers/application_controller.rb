@@ -27,10 +27,10 @@ end
 # text/plain.
 
 def cors_preflight_check
-  if request.method == :options
     headers['Access-Control-Allow-Origin'] = '*'
     headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
     headers['Access-Control-Allow-Headers'] = 'X-Requested-With, X-Prototype-Version'
+  if request.method == :options
     headers['Access-Control-Max-Age'] = '1728000'
     render :text => '', :content_type => 'text/plain'
   end
@@ -62,7 +62,7 @@ end
         xmldoc = Nokogiri::XML(res.body)
         target.annotations.each do |anno|
           c = anno.annotation_target_instances[0].annotation_constraint
-          unless c.nil? or c.constraint_type != :xpath_and_word_count # only handle properly constrained annotations
+          unless c.nil? or c.constraint_type != 'xpath_and_word_count' # only handle properly constrained annotations
             c.constraint.match /,/ # expected format: <xpath>,word-count, e.g. "//TEI.2[1]/p[2],13"
             xpath, word_count = $`, $'
             node = xmldoc.xpath(xpath).first
@@ -73,16 +73,16 @@ end
                 anno_body = Nokogiri::XML::Element.new 'OAC_Annotation', xmldoc
                 anno_body['class'] = 'OAC_Annotation'
                 #anno_body.attributes['class'] = 'OAC_Annotation' # REXML
-                if /.jpg$/.match(anno.body)
-                  img = Nokogiri::XML::Element.new('OAC_img')
+                if /.jpg$/.match(anno.annotation_body.content)
+                  img = Nokogiri::XML::Element.new 'OAC_img', xmldoc
                   #img = REXML::Element.new('OAC_img')
-                  img['src'] = anno.body 
+                  img['src'] = anno.annotation_body.content
                   #img.attributes['src'] = anno.body # REXML
                   anno_body.add_child img
                   #anno_body.add img # REXML
                 else
                   # assume we just dump the body content as-is in our DIV
-                  anno_body.add_child Nokogiri::XML::Text.new anno.annotation_body.content
+                  anno_body.add_child(Nokogiri::XML::Text.new anno.annotation_body.content, xmldoc)
                 end
                 # serialize existing node and interpolate our annotation markup
                 node_as_text = node.serialize
