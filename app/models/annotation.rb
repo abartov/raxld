@@ -10,19 +10,19 @@ public
     self.annotation_body = body
     @targets = []
     targets.each { |t|
-      target = AnnotationTargetInfo.find_by_uri(t["uri"])
+      target = AnnotationTargetInfo.find_by_uri(t[:uri])
       if target.nil?
 	# this one's new to us -- create it
-        target = AnnotationTargetInfo.new(:uri => t["uri"])
+        target = AnnotationTargetInfo.new(:uri => t[:uri])
       end
       self.targets << target
       target.save
       self.save
-      constraint = t["constraint"]
+      constraint = t[:constraint]
       unless constraint.nil?
         instance = AnnotationTargetInstance.find_by_annotation_id_and_annotation_target_info_id(self.id, target.id)
         debugger
-        c = AnnotationConstraint.new(:constraint => constraint["constraint"], :constraint_type => constraint["constraint_type"])
+        c = AnnotationConstraint.new(:constraint => constraint[:constraint], :constraint_type => constraint[:constraint_type])
         instance.annotation_constraint = c
         instance.save!
       end
