@@ -164,7 +164,6 @@ class AnnotationsController < ApplicationController
     end
     @annotation = Annotation.new(:author_uri => params["author_uri"])
     @annotation.construct(@body, targets) # fill out the annotation and build relationships
-    debugger
 
     respond_to do |format|
       if @annotation.save

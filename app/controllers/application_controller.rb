@@ -55,12 +55,13 @@ end
     xslt = XML::XSLT.new()
     target = AnnotationTargetInfo.find_by_uri(xml_uri) # find annotations for target uri
     unless target.nil? || target.annotations.count == 0
-      res = NET::HTTP.get_response(URI.parse(xml_uri))
-      if res.code == 200
+      res = Net::HTTP.get_response(URI.parse(xml_uri))
+      if res.code.to_i == 200
         nodes_to_replace = []
         #xmldoc = REXML::Document.new res.body
         xmldoc = Nokogiri::XML(res.body)
         target.annotations.each do |anno|
+          anno.
           node = xmldoc.xpath(anno.xpath).first
           unless node.nil?
             unless anno.annotation_body.nil? or anno.annotation_body.content.nil? or anno.annotation_body.content.empty?
