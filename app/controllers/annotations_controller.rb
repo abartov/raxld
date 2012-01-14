@@ -93,7 +93,7 @@ class AnnotationsController < ApplicationController
 	body.save!
 	anno = Annotation.new(:author_uri => 'http://interedition.eu/') # placeholder...
         # for demo purposes, we use only the FIRST occurrence of a token to place an annotation
-	anno.construct(body, [{:uri => uri, :constraint => { :constraint => token_info.shift, :constraint_type => "xpath_and_wordcount"}}])
+	anno.construct(body, [{:uri => uri, :constraint => { :constraint => token_info.shift, :constraint_type => :xpath_and_word_count}}])
 	anno.uri = url_for anno
 	anno.save!
 	@geoname_annos << anno
@@ -154,26 +154,29 @@ class AnnotationsController < ApplicationController
     if body_uri.nil? or targets.nil? or targets.empty?
       # invalid annotation
       # TODO: report the error
-      flash[:error] = "Invalid input"
-      return
-    end
-    @body = AnnotationBody.find_by_uri(body_uri)
-    if @body.nil?
-      # if the body is not already hosted on our server, we need to create a body record for it anyway, so we can represent the relationship correctly.  However, we won't be able to actually serve that URI ourselves.
-      @body = AnnotationBody.new(:uri => body_uri)
-    end
-    @annotation = Annotation.new(:author_uri => params["author_uri"])
-    @annotation.construct(@body, targets) # fill out the annotation and build relationships
-
-    respond_to do |format|
-      if @annotation.save
-        @annotation.uri = url_for @annotation
-        @annotation.save!
-        format.html { redirect_to @annotation, notice: 'Annotation was successfully created.' }
-        format.json { render json: @annotation, status: :created, location: @annotation }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @annotation.errors, status: :unprocessable_entity }
+      #flash[:error] = "Invalid input"
+      respond_to do |format|
+        format.html { "Error: invalid input -- did you include the mandatory params?" }
+        format.json { '{"Error: invalid input -- did you include the mandatory params?"}' }
+      end
+    else
+      @body = AnnotationBody.find_by_uri(body_uri)
+      if @body.nil?
+        # if the body is not already hosted on our server, we need to create a body record for it anyway, so we can represent the relationship correctly.  However, we won't be able to actually serve that URI ourselves.
+        @body = AnnotationBody.new(:uri => body_uri)
+      end
+      @annotation = Annotation.new(:author_uri => params["author_uri"])
+      @annotation.construct(@body, targets) # fill out the annotation and build relationships
+      respond_to do |format|
+        if @annotation.save
+          @annotation.uri = url_for @annotation
+          @annotation.save!
+          format.html { redirect_to @annotation, notice: 'Annotation was successfully created.' }
+          format.json { render json: @annotation, status: :created, location: @annotation }
+        else
+          format.html { render action: "new" }
+          format.json { render json: @annotation.errors, status: :unprocessable_entity }
+        end
       end
     end
   end

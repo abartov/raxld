@@ -61,29 +61,39 @@ end
         #xmldoc = REXML::Document.new res.body
         xmldoc = Nokogiri::XML(res.body)
         target.annotations.each do |anno|
-          anno.
-          node = xmldoc.xpath(anno.xpath).first
-          unless node.nil?
-            unless anno.annotation_body.nil? or anno.annotation_body.content.nil? or anno.annotation_body.content.empty?
-#              anno_body = NokogiriREXML::Element.new('OAC_Annotation')
-              anno_body = Nokogiri::XML::Element.new 'OAC_Annotation', xmldoc
-              anno_body['class'] = 'OAC_Annotation'
-              #anno_body.attributes['class'] = 'OAC_Annotation' # REXML
-              if /.jpg$/.match(anno.body)
-                img = Nokogiri::XML::Element.new('OAC_img')
-                #img = REXML::Element.new('OAC_img')
-                img['src'] = anno.body 
-                #img.attributes['src'] = anno.body # REXML
-                anno_body.add_child img
-                anno_body.add img # REXML
-              else
-                # assume we just dump the body content as-is in our DIV
-                anno_body.add_child Nokogiri::XML::Text.new anno.annotation_body.content
+          c = anno.annotation_target_instances[0].annotation_constraint
+          unless c.nil? or c.constraint_type != :xpath_and_word_count # only handle properly constrained annotations
+            c.constraint.match /,/ # expected format: <xpath>,word-count, e.g. "//TEI.2[1]/p[2],13"
+            xpath, word_count = $`, $'
+            node = xmldoc.xpath(xpath).first
+            unless node.nil?
+              unless anno.annotation_body.nil? or anno.annotation_body.content.nil? or anno.annotation_body.content.empty?
+                # prepare the annotation markup
+#               anno_body = NokogiriREXML::Element.new('OAC_Annotation')
+                anno_body = Nokogiri::XML::Element.new 'OAC_Annotation', xmldoc
+                anno_body['class'] = 'OAC_Annotation'
+                #anno_body.attributes['class'] = 'OAC_Annotation' # REXML
+                if /.jpg$/.match(anno.body)
+                  img = Nokogiri::XML::Element.new('OAC_img')
+                  #img = REXML::Element.new('OAC_img')
+                  img['src'] = anno.body 
+                  #img.attributes['src'] = anno.body # REXML
+                  anno_body.add_child img
+                  #anno_body.add img # REXML
+                else
+                  # assume we just dump the body content as-is in our DIV
+                  anno_body.add_child Nokogiri::XML::Text.new anno.annotation_body.content
+                end
+                # serialize existing node and interpolate our annotation markup
+                node_as_text = node.serialize
+                charpos = find_charpos_by_word_number(node_as_text, word_count)
+                new_node_text = node_as_text[0..charpos] + anno_body.serialize + node_as_text[charpos..-1]
+                
+                # remember the node to replace and the annotation body to replace it with
+                # (we don't do it during the loop to avoid changing the order for later XPath matches)
+                nodes_to_replace << [node, new_node_text]
+                #node.parent.insert_after(node, anno_body) # REXML
               end
-              # remember the node to replace and the annotation body to replace it with
-              # (we don't do it during the loop to avoid changing the order for later XPath matches)
-              nodes_to_replace << [node, anno_body]
-              #node.parent.insert_after(node, anno_body) # REXML
             end
           end
         end
