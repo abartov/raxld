@@ -54,6 +54,7 @@ end
   def annotate_xml_and_render_html(xml_uri) # gacked from the old code in texts_controller
     xslt = XML::XSLT.new()
     target = AnnotationTargetInfo.find_by_uri(xml_uri) # find annotations for target uri
+    dbg = ''
     unless target.nil? || target.annotations.count == 0
       res = Net::HTTP.get_response(URI.parse(xml_uri))
       if res.code.to_i == 200
@@ -82,7 +83,8 @@ end
                   #anno_body.add img # REXML
                 else
                   # assume we just dump the body content as-is in our DIV
-                  anno_body.add_child(Nokogiri::XML::Text.new anno.annotation_body.content, xmldoc)
+                  anno_text = Nokogiri::XML::Text.new anno.annotation_body.content, xmldoc
+                  anno_body.add_child(anno_text)
                 end
                 # serialize existing node and interpolate our annotation markup
                 node_as_text = node.serialize
@@ -98,6 +100,7 @@ end
           end
         end
         nodes_to_replace.each do |n|
+          dbg += "new_node_text = #{n[1]}\n"
           n[0].replace(n[1])
         end
       end
@@ -108,7 +111,7 @@ end
     xhtml = xslt.serve()
     #temporary, fugly hack
     xhtml.gsub!(/\n/, '<br/>')
-     
+    xhtml += dbg 
     return xhtml
   end
 
