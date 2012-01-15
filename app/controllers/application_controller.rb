@@ -52,9 +52,7 @@ def fetch_url(url, options)
 end
   # this routine ASSUMES the annotation constraints are valid XPaths
   def annotate_xml_and_render_html(xml_uri) # gacked from the old code in texts_controller
-    xslt = XML::XSLT.new()
     target = AnnotationTargetInfo.find_by_uri(xml_uri) # find annotations for target uri
-    dbg = ''
     unless target.nil? || target.annotations.count == 0
       res = Net::HTTP.get_response(URI.parse(xml_uri))
       if res.code.to_i == 200
@@ -100,18 +98,20 @@ end
           end
         end
         nodes_to_replace.each do |n|
-          dbg += "new_node_text = #{n[1]}\n"
           n[0].replace(n[1])
         end
+
+        xslt = XML::XSLT.new()
+        xslt.xml = REXML::Document.new xmldoc.serialize # TODO: see about doing this part in Nokogiri as well
+        xslt.xsl = REXML::Document.new File.read(::Rails.root.to_s+'/public/'+"min.xsl")
+        #xslt.xsl = REXML::Document.new File.read( ::Rails.root.to_s+'/public/'+"tei.xsl")
+        xhtml = xslt.serve()
+        #temporary, fugly hack
+        xhtml.gsub!(/\n/, '<br/>')
+        xhtml.gsub!(/<br\/>\s+<br\/>/, '<br/>') # more quick fuglyness to reduce ick
       end
     end
-    xslt.xml = REXML::Document.new xmldoc.serialize
-    xslt.xsl = REXML::Document.new File.read(::Rails.root.to_s+'/public/'+"min.xsl")
-    #xslt.xsl = REXML::Document.new File.read( ::Rails.root.to_s+'/public/'+"tei.xsl")
-    xhtml = xslt.serve()
-    #temporary, fugly hack
-    xhtml.gsub!(/\n/, '<br/>')
-    xhtml += dbg 
+    
     return xhtml
   end
 
